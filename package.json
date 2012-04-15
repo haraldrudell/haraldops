@@ -1,8 +1,7 @@
 {
 	"name": "haraldops",
 	"description": "operations mail and up-monitoring functions",
-	"version": "0.0.6",
-	"private": true,
+	"version": "0.0.7",
 	"contributors": [
 		{
 			"name": "Harald Rudell",
@@ -11,9 +10,13 @@
 		}
 	],
 	"dependencies": {
-		"haraldutil": "git+ssh://gt:haraldutil.git",
+		"haraldutil": "git://github.com/haraldrudell/haraldutil.git",
 		"nodemailer": ">= 0.3",
 		"request": ">= 0.0.1"
+	},
+	"repository" : {
+		"type" : "git",
+		"url" : "https://haraldrudell@github.com/haraldrudell/haraldops.git"
 	},
 	"main": "./lib/ops"
 }
