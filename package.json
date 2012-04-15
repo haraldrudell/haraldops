@@ -1,0 +1,19 @@
+{
+	"name": "haraldops",
+	"description": "operations mail and up-monitoring functions",
+	"version": "0.0.6",
+	"private": true,
+	"contributors": [
+		{
+			"name": "Harald Rudell",
+			"email": "harald@allgoodapps.com",
+			"web": "http://blog.haraldrudell.com"
+		}
+	],
+	"dependencies": {
+		"haraldutil": "git+ssh://gt:haraldutil.git",
+		"nodemailer": ">= 0.3",
+		"request": ">= 0.0.1"
+	},
+	"main": "./lib/ops"
+}
