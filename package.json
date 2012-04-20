@@ -1,7 +1,8 @@
 {
 	"name": "haraldops",
 	"description": "operations mail and up-monitoring functions",
-	"version": "0.0.7",
+	"author": "Harald Rudell <harald@allgoodapps.com>",
+	"version": "0.0.8",
 	"contributors": [
 		{
 			"name": "Harald Rudell",
