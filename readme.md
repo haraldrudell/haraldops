@@ -112,3 +112,5 @@ Parse option argument to a function
 
 ## haraldops.defaults.loadDefaultFile()
 Loads ~/haraldops.json
+
+## haraldops.tee({ logFile: '/tmp/nodelog', logRotate: 'day'})
