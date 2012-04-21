@@ -81,8 +81,8 @@ Closes mail when all pending messages has been sent
 ## ops.opsconstructor(loggerFunc, opts)
 * logger: function to use for progress messages, default none
 * opts: settings, keys: user pass to service maxAge pingers
-* maxAge: number of seconds a monitored server can have failed tests
-* pingers: array of argument objects for pinger()
+	* maxAge: number of seconds a monitored server can have failed tests
+	* pingers: array of argument objects for pinger()
 
 ## opsObject.responder(app, url)
 * app a server from connect or express
@@ -90,10 +90,10 @@ Closes mail when all pending messages has been sent
 
 ## opsObject.pinger(optsArg)
 * optsArg keys:
-* title: the printable name of the server being checked eg. 'My box'
-* url: the url for that server, eg. 'http://server.com/status'
-* period (optional, default 300): the number of seconds between each check
-* isPingerList (optional, default no): if true the entire response is examined for times and consistency. If false, the response has to be error free and have status code 200
+	* title: the printable name of the server being checked eg. 'My box'
+	* url: the url for that server, eg. 'http://server.com/status'
+	* period (optional, default 300): the number of seconds between each check
+	* isPingerList (optional, default no): if true the entire response is examined for times and consistency. If false, the response has to be error free and have status code 200
 
 ## opsObject.shutDown()
 Deactivates the opsObject
@@ -111,9 +111,21 @@ Parse option argument to a function
 * defaultFile: fully qualified filename used in exception printout
 
 ## haraldops.defaults.loadDefaultFile()
-Loads ~/haraldops.json
+Loads ~/haraldops.json and returns the json object
 
-## haraldops.tee({ logFile: '/tmp/nodelog', logRotate: 'day'})
-* Connects console.log and console.err to the named file
-* The file can be rotated: minute hour day month year
+## haraldops.tee(opts)
+Copies console.log and console.err output to the named file
+* opts:
+	* logFolder optional folder, default home folder
+	* logFile: filename or complete path eg. '/tmp/nodelog'
+	* logRotate: period of rotation minute hour day month year
+example:
+
+```js
+haraldops.tee({
+	logFile: '/tmp/nodelog,
+	logRotate: 'day'
+})
+```
+
 It's cool! 
