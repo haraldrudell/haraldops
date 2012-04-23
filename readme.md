@@ -103,15 +103,19 @@ Deactivates the opsObject
 * defaultFolder: single folder or array of folders, no terminating slash
 * ignoreHome: do not search in user's home folder
 
-## haraldops.defaults.getOpts(optsArg, defaultOpts, mustHaves, defaultFile)
+## haraldops.getOpts(optsArg, defaultOpts, mustHaves, defaultFile)
 Parse option argument to a function
 * optsArg: provided options
 * defaultOpts: merged-in defaul options
 * mustHaves: array of strings, each argument must be present and have string value. If one is missing an exception is thrown
 * defaultFile: fully qualified filename used in exception printout
 
-## haraldops.defaults.loadDefaultFile()
+## haraldops.loadDefaultFile()
 Loads ~/haraldops.json and returns the json object
+
+## haraldops.getHomeFolder()
+
+## haraldops.getTmpFolder()
 
 ## haraldops.tee(opts)
 Copies console.log and console.err output to the named file
