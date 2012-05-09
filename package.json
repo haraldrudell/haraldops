@@ -11,7 +11,7 @@
 		}
 	],
 	"dependencies": {
-		"haraldutil": "git://github.com/haraldrudell/haraldutil.git",
+		"haraldutil": "",
 		"nodemailer": ">= 0.3",
 		"request": ">= 0.0.1"
 	},
