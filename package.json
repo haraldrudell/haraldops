@@ -19,5 +19,5 @@
 		"type" : "git",
 		"url" : "https://haraldrudell@github.com/haraldrudell/haraldops.git"
 	},
-	"main": "./lib/ops"
+	"main": "./lib/init"
 }
