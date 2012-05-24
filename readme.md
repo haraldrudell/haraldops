@@ -4,7 +4,10 @@ Facilitates configuration, operation and service notifications for node.js appli
 ## Loading a per-machine configuration
 ```js
 var haraldops = require('haraldops')
-var defaults = haraldops.init({ appName: 'Node.js #3', path: __dirname, logger: console.log })
+var defaults = haraldops.init({
+	appName: 'Node.js #3',
+	path: __dirname,
+	logger: console.log })
 ```
 * Derives a filesystem friendly app identifier a-z0-9, in this case 'nodejs3' * Looks for a .json file by this name  in $HOME/apps, $HOME or the folder of this script.
 * Loads the json
@@ -21,6 +24,9 @@ haraldops.init({ path: __scriptname, logger: console.log }
 If the script it called MyStuff.js, identifier is mystuff
 
 ### using foldername
+```js
+haraldops.init({ path: __dirname, logger: console.log }
+```
 If executing coolfolder/app.js, the identifier is coolfolder
 
 ### Using default filename
@@ -56,7 +62,7 @@ var opts = haraldops.defaults(__file + 'on')
 		"pass": "password",
 		"to": "recipient@gmail.com",
 		"responder": "/status",
-		"indentifier": "thisapp",
+		"identifier": "thisapp",
 		"pingers": [
 			{
 				"title": "Make sure Google is up",
@@ -109,7 +115,9 @@ mail.sendMail('subject', 'body')
 ## init(opts)
 ```js
 var haraldops = require('haraldops')
-var defaults = haraldops.init({ appName: 'Node.js #3', logger: console.log })
+var defaults = haraldops.init({
+	appName: 'Node.js #3',
+	logger: console.log })
 ```
 Loads provisioning json from disk.
 * opts
@@ -220,42 +228,40 @@ opsObject.responder(app, o.responder)
 ## opsObject.shutDown()
 Deactivates the opsObject
 
-## haraldops.defaults(appName, defaultFolders, ignoreHome)
+## defaults(appName, defaultFolders, ignoreHome)
 * appname, may include folder and extension.
 * defaultFolder: single folder or array of folders, no terminating slash
 * ignoreHome: do not search in user's home folder
 
-## haraldops.getOpts(optsArg, defaultOpts, mustHaves, defaultFile)
+## getOpts(optsArg, defaultOpts, mustHaves, defaultFile)
 Parse option argument to a function
 * optsArg: provided options
 * defaultOpts: merged-in default options
 * mustHaves: array of strings, each argument must be present and have string value. If one is missing an exception is thrown
 * defaultFile: fully qualified filename used in exception printout
 
-## haraldops.loadDefaultFile()
+## loadDefaultFile()
 Loads ~/haraldops.json and returns the json object
 
-## haraldops.getHomeFolder()
+## getHomeFolder()
 returns something like '/home/username'
 
-## haraldops.getTmpFolder()
+## getTmpFolder()
 Returns '/tmp' or '/home/user/tmp' or other suitable folder.
 
-## haraldops.tee(opts)
-Copies console.log and console.err output to the named file
-* opts:
-	* logFolder optional folder, default home folder
-	* logFile: filename or complete path eg. '/tmp/nodelog'
-	* logRotate: period of rotation minute hour day month year
-example:
-
+## tee(opts)
 ```js
 haraldops.tee({
 	logFile: '/tmp/nodelog,
 	logRotate: 'day'
 })
 ```
+Copies console.log and console.err output to the named file
+* opts:
+	* logFolder optional folder, default home folder
+	* logFile: filename or complete path eg. '/tmp/nodelog'
+	* logRotate: period of rotation minute hour day month year
 
 It's cool! 
 
-## haraldops.unTee(opts)
+## unTee(opts)

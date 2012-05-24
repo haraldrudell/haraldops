@@ -2,7 +2,7 @@
 	"name": "haraldops",
 	"description": "Functions for operation, notification and provisioning by Harald Rudell",
 	"author": "Harald Rudell <harald@allgoodapps.com>",
-	"version": "0.0.16",
+	"version": "0.0.17",
 	"contributors": [
 		{
 			"name": "Harald Rudell",
