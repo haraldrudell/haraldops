@@ -1,5 +1,5 @@
 # haraldops
-Facilitates deployment configuration and in-service monitoring for node applications
+Facilitates configuration, operation and service notifications for node.js applications
 # Usage
 ## Configuration Files
 ### Using default filename
@@ -73,13 +73,22 @@ mail.sendMail('subject', 'body')
 * logger: function to use for progress messages, default none
 * opts: email settings, keys: user pass to service
 
-## haraldops.errorstack()
-usage:
+## errorstack()
 ```js
 var haraldops = require('haraldops')
 haraldops.errorstack()
 ```
 Adds a stack trace to any invocation of console.error or console.warn. Some native code , eg. the http module, invokes these functions on difficulties, having a stack trace facilitates troubleshooting of those situations.
+```
+This type of response MUST NOT have a body. Ignoring data passed to end().
+Error: console.error invocation
+    at Error (unknown source)
+    at Object.myConsoleError (/home/fasenode/nodejs3/app.js:71:10)
+    at ServerResponse.end (http.js:662:13)
+    at /home/fasenode/nodejs3/node_modules/express/node_modules/connect/lib/middleware/session.js:281:15
+    at Array.0 (/home/fasenode/nodejs3/node_modules/express/node_modules/connect/lib/middleware/session/memory.js:75:11)
+    at EventEmitter._tickCallback (node.js:190:38)
+```
 
 ## haraldops.logrequest(logger, ignoreTheseUris)
 ```js
@@ -98,8 +107,12 @@ Logs incoming requests.
 * logger: a function that prints a single string argument
 * ignoreTheseUris a string, a regexp or an array of those types: do not log these requests
 
-output:
+output
+
+Time stamp, request method, host, client and user agent string
+```
 2012-05-16T23:11Z GET http://localhost:3000/ 127.0.0.1:53169 Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.46 Safari/536.5
+```
 
 ## mailObject.sendMail(subject, body)
 
