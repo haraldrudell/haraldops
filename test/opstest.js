@@ -13,28 +13,38 @@ function testPinger(test) {
 	var opsUrl = '/status'
 
 	// create ops instance
-	var opsinstance = ops.opsconstructor(console.log, 'user', 'pass', 'to', false, mockupRequest)
+	var opts = {
+		'user': 'u',
+		'pass': 'p',
+		'to': 'x',
+		'identifier': 'respondingapp',
+	}
+	var logger = console.log
+	var opsinstance = ops.opsconstructor(logger, opts,  mockupRequest)
 
 	// setup mockup mailsend: should not be invoked
 	opsinstance.sendMail = mockupSendMail
 
 	// setup our mockup responding server for requests from ops
-	var pingerlistInstance = pingerlist()
+	var pingerlistInstance = pingerlist(opts.identifier)
 	var mockupRequestInvocations = 0
 
 	// make sure that ops register its responding route
 	var app = mockupServerInstance()
-	opsinstance.responder(app)
+	opsinstance.responder(app, opsUrl)
 	test.ok(app.gets[opsUrl], 'ops.responder failed to register the /status route')
 
 	// add a pinger - it will be immediately invoked
-	var title = 'TestPing'
-	var pingerUrl = 'http://nowhere'
-	var period = 10
-	opsinstance.pinger(title, pingerUrl, period)
+	var pingerOpts = {
+		title: 'TestPing',
+		url: 'http://nowhere',
+		period: 10,
+		app: 'someappidentifier',
+	}
+	opsinstance.pinger(pingerOpts)
 	test.equal(mockupRequestInvocations, 1, 'ops did not invoke request')
 
-	// check pinger status
+	// request pinger /status from our ops instance being tested
 	var response = app.request(opsUrl)
 
 	// make our own brief check
@@ -42,13 +52,13 @@ function testPinger(test) {
 	var printableResponse = ': \'' + response + '\''
 	test.ok(object != null, 'Response not json' + printableResponse)
 	if (Object.keys(object).length != 2 ||
-		!object.hasOwnProperty('now') ||
-		!object.hasOwnProperty(title))
+		!object.hasOwnProperty(opts.identifier) ||
+		!object.hasOwnProperty(pingerOpts.title))
 		test.ok(false, 'Response properties incorrect' + printableResponse)
-	var value = object.now
+	var value = object[opts.identifier]
 	if (value == null || value.constructor != Number)
 		test.ok(false, 'Response now value not numeric' + printableResponse)
-	var testObject = object[title]
+	var testObject = object[pingerOpts.title]
 	if (testObject == null || Object.keys(testObject).length != 2)
 		test.ok(false, 'Response data object properties bad' + printableResponse)
 	var value = testObject.period	
@@ -60,7 +70,7 @@ function testPinger(test) {
 
 
 	// do official check
-	var result = pingerlistInstance.checkResponse(title, response)
+	var result = pingerlistInstance.checkResponse(pingerOpts.title, response, opts.identifier)
 	test.equal(result, null, 'ops response bad:' + result)
 
 
@@ -72,7 +82,7 @@ function testPinger(test) {
 
 	// mockup responding server
 	function mockupRequest(url, callback) {
-		test.equal(url, pingerUrl, 'ops.pinger invoked request with a bad url')
+		test.equal(url, pingerOpts.url, 'ops.pinger invoked request with a bad url')
 		test.equal(mockupRequestInvocations, 0, 'ops.pinger invoked request more than once')
 		mockupRequestInvocations++
 		callback(null, { statusCode: 200},
@@ -98,37 +108,42 @@ function testPinger(test) {
 		app.request = request
 		return app
 
+		// register a get handler
 		function get(url, middleware) {
 			app.gets[url] = middleware
 		}
 
+		// this test execute a ping request to the tested ops instance
 		function request(url) {
-			var response
+			var pingerResponseString
 			var writeHeadInvocation = 0
 
 			// make sure ops initialized the url
 			var opsMiddleware = app.gets[url]
 			test.ok(opsMiddleware, 'test url was not registered by ops')
 
-			// execute the request
-			opsMiddleware(undefined, {
+			// execute a request for the tested ops intance to repond to
+			var mockRequestInstance
+			var mockResponseInstance = {
 				writeHead: writeHead,
-				send: send
-			})
+				send: send				
+			}
+			opsMiddleware(mockRequestInstance, mockResponseInstance)
 
 			// check outcome, return response
-			test.equal(writeHeadInvocation, 1, 'ops did not set response code')
-			return response
+			test.equal(writeHeadInvocation, 1, 'ops did not set response code:' + writeHeadInvocation)
+			return pingerResponseString
 
 			// reponse.writeHead mockup
 			function writeHead(code, json) {
-				test.equal(code, 200, 'ops responded with bad status code')
+				test.equal(code, 200, 'ops responded with bad status code:' + code)
 				writeHeadInvocation++
 			}
 
 			// response.send mockup
-			function send(json) {
-				response =json
+			function send(jsonString, headerObject, statusCode) {
+				if (headerObject || statusCode) writeHead(statusCode, headerObject)
+				pingerResponseString =jsonString
 			}
 
 		}
