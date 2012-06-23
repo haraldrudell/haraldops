@@ -113,19 +113,41 @@ mail.sendMail('subject', 'body')
 # Reference
 
 ## init(opts)
+Provides properties of the environment, reads settings files and configures using assembled settings.
 ```js
 var haraldops = require('haraldops')
 var defaults = haraldops.init({
 	appName: 'Node.js #3',
 	logger: console.log })
 ```
-Loads provisioning json from disk.
 * opts
-	* .logger: logging function, eg. console.log
-	* .path: string or array of strings, eg. __dirname or __filename from calling script
-	* .appName: A human readable application name like 'Great Web site'
-	* identifier is derived from appname or the last part of the first path provided
-	* results: defaults.init.appName, defaults.init.identifier
+	* .logger: optional function: logging function, eg. console.log
+	* .path: optional string or array of strings, eg. __dirname or __filename from calling script, default is $HOME, $HOME/apps, and the app'
+	s folder
+	* .appName: optional string: A human readable application name like 'Great Web site', default is the app's folder name
+	* identifier: optional string identifier used for settings filename, default is derived from appname
+	* noFile: optional if false, no settings file is read
+
+return value: object
+```js
+console.log(require('haraldops').init({
+	appName: 'Node God',
+	logger: console.log }))
+
+{ PORT: 1111,
+  init: 
+   { appFolder: '/home/foxyboy/Desktop/c505/node/nodegod',
+     tmpFolder: '/home/foxyboy/tmp',
+     homeFolder: '/home/foxyboy',
+     logger: [Function],
+     appName: 'Node God',
+     identifier: 'nodegod',
+     defaultsFile: '/home/foxyboy/apps/nodegod.json' } }
+```
+* defaultsFile is only present if a settings file was successfully read
+* All other properties are guaranteed to be present
+* PORT: number: env.PORT or PORT property from settings file or 3000
+* Any additional properties present in the opts argument and absent from a read settings file are copied to the defaults result.
 
 ## ops.mailconstructor(logger, opts)
 ```js
