@@ -1,53 +1,67 @@
-// opstest.js
-// unit test for ops.js
+// pingertest.js
+// unit test for init.js
+
 // https://github.com/caolan/nodeunit
 // http://nodejs.org/docs/latest/api/all.html
 
 var ops = require('../lib/ops')
 var pingerlist = require('../lib/pingerlist')
 
-exports.testPinger = testPinger
+module.exports = {
+	testPinger: testPinger,
+}
 
 function testPinger(test) {
+	// we will test an opsinstance pinging a remote pingerlist instance
 
-	var opsUrl = '/status'
-
-	// create ops instance
+	// 1. instantiate opsintance
+	// create ops responding instance
+	// mail settings
+	// the running app is respondingapp
+	// when it verifies a pinger, it uses mockupRequest
+	var opsAppId = 'myopsinstance'
 	var opts = {
-		'user': 'u',
-		'pass': 'p',
-		'to': 'x',
-		'identifier': 'respondingapp',
+		mailsend: {
+			'user': 'u',
+			'pass': 'p',
+			'to': 'x',
+		},
+		'identifier': opsAppId,
 	}
 	var logger = console.log
 	var opsinstance = ops.opsconstructor(logger, opts,  mockupRequest)
-
+	var mockupRequestInvocations = 0
 	// setup mockup mailsend: should not be invoked
 	opsinstance.sendMail = mockupSendMail
 
-	// setup our mockup responding server for requests from ops
-	var pingerlistInstance = pingerlist(opts.identifier)
-	var mockupRequestInvocations = 0
+	// 2. create a mockup remote server responding to pings from opsinstance
+	var pingedAppIdentifier = 'respondingapp'
+	var pingerlistInstance = pingerlist(pingedAppIdentifier)
 
-	// make sure that ops register its responding route
-	var app = mockupServerInstance()
-	opsinstance.responder(app, opsUrl)
-	test.ok(app.gets[opsUrl], 'ops.responder failed to register the /status route')
-
-	// add a pinger - it will be immediately invoked
+	// 3. add a pinger - it will be immediately invoked
 	var pingerOpts = {
 		title: 'TestPing',
 		url: 'http://nowhere',
 		period: 10,
-		app: 'someappidentifier',
+		app: pingedAppIdentifier,
 	}
 	opsinstance.pinger(pingerOpts)
 	test.equal(mockupRequestInvocations, 1, 'ops did not invoke request')
 
-	// request pinger /status from our ops instance being tested
+	// 4. allow our opsinstance to respond to status requests from the Internet
+	// make sure that ops register its responding route
+	var opsUrl = '/status'
+	var responderOpts = {
+		app: opsAppId,
+	}
+	var app = mockupServerInstance()
+	opsinstance.responder(app, opsUrl)
+	test.ok(app.gets[opsUrl], 'ops.responder failed to register the /status route')
+
+	// 5. request pinger /status from our ops instance being tested
 	var response = app.request(opsUrl)
 
-	// make our own brief check
+	// 6. make our own brief check
 	var object = JSON.parse(response)
 	var printableResponse = ': \'' + response + '\''
 	test.ok(object != null, 'Response not json' + printableResponse)
@@ -68,14 +82,12 @@ function testPinger(test) {
 	if (value == null || value.constructor != Number)
 		test.ok(false, 'Response data last not numeric' + printableResponse)
 
-
-	// do official check
-	var result = pingerlistInstance.checkResponse(pingerOpts.title, response, opts.identifier)
+	// 7. do official check
+	// undefined is returned on success, otherwise a textual error message
+	var result = pingerlistInstance.checkResponse(responderOpts, response, opts.identifier)
 	test.equal(result, null, 'ops response bad:' + result)
 
-
-
-	// shut down pinger
+	// 8. shut down pinger
 	opsinstance.shutDown()
 
 	test.done()

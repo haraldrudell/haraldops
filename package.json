@@ -2,7 +2,7 @@
 	"name": "haraldops",
 	"description": "Functions for operation, notification and provisioning by Harald Rudell",
 	"author": "Harald Rudell <harald@allgoodapps.com>",
-	"version": "0.0.24",
+	"version": "0.1.0",
 	"contributors": [
 		{
 			"name": "Harald Rudell",
@@ -19,5 +19,5 @@
 		"type" : "git",
 		"url" : "https://haraldrudell@github.com/haraldrudell/haraldops.git"
 	},
-	"main": "./lib/init"
+	"main": "./lib/haraldops"
 }
