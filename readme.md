@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/haraldrudell/haraldops.png)](http://travis-ci.org/haraldrudell/haraldops)
 # haraldops
 Facilitates configuration, operation and service notifications for node.js applications
 # Usage
