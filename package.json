@@ -2,8 +2,12 @@
 	"name": "haraldops",
 	"description": "Functions for operation, notification and provisioning by Harald Rudell",
 	"author": "Harald Rudell <harald@allgoodapps.com>",
-	"keywords": ["operations", "email", "notification"],
-	"version": "0.1.1",
+	"keywords": [
+		"operations",
+		"email",
+		"notification"
+	],
+	"version": "0.1.3",
 	"contributors": [
 		{
 			"name": "Harald Rudell",
@@ -11,14 +15,24 @@
 			"web": "http://blog.haraldrudell.com"
 		}
 	],
+	"devDependencies": {
+		"mochawrapper": ">= 0.0.31"
+	},
 	"dependencies": {
-		"haraldutil": "",
+		"greatjson": ">= 0.0.8",
+		"haraldutil": ">= 0.1.5",
 		"nodemailer": ">= 0.3",
 		"request": ">= 0.0.1"
 	},
-	"repository" : {
-		"type" : "git",
-		"url" : "https://haraldrudell@github.com/haraldrudell/haraldops.git"
+	"repository": {
+		"type": "git",
+		"url": "https://haraldrudell@github.com/haraldrudell/haraldops.git"
 	},
-	"main": "./lib/haraldops"
+	"main": "./lib/haraldops",
+	"scripts": {
+		"test": "mocha --ui exports --reporter spec",
+		"monitor": "mocha --ui exports --reporter min --watch",
+		"debugtest": "mocha --debug-brk --ui exports --reporter spec",
+		"coverage": "mochacoverage"
+	}
 }
