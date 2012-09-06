@@ -22,6 +22,7 @@ exports['MailOnly:'] = {
 			},
 			noFile: true,
 			logger: function () {},
+			appFolder: __dirname,
 		}
 		var actual = init.init(initOpts)
 //console.log(actual)
@@ -35,7 +36,8 @@ exports['InitOverride:'] = {
 			path: path.join(__dirname, 'data'),
 			logger:log,
 			property2: 'fromobj',
-			property3: 'fromobj'
+			property3: 'fromobj',
+			appFolder: __dirname,
 		}
 		var filePath = path.join(initOpts.path, initOpts.identifier + '.json')
 		var actual = init.init(initOpts)
@@ -68,7 +70,7 @@ exports['MinimalInit:'] = {
 		var appName = 'X'
 		var expected = {
 			init: {
-				appFolder: jsonloader.getAppFolder(),
+				appFolder: __dirname,
 				tmpFolder: jsonloader.getTmpFolder(),
 				homeFolder: jsonloader.getHomeFolder(),
 				logger: log,
@@ -76,9 +78,10 @@ exports['MinimalInit:'] = {
 				identifier: appName.toLowerCase(),
 			},
 			PORT: 3000,
+			appFolder: __dirname,
 		}
 		var invocations = 0
-		var actual = init.init({appName: 'X', noFile: true, logger:log})
+		var actual = init.init({appName: 'X', noFile: true, logger:log, appFolder: __dirname,})
 	/*
 	{ init: 
 	   { appFolder: '/home/foxyboy/Desktop/c505/node/haraldops',
