@@ -9,7 +9,7 @@ Facilitates configuration, operation and service notifications for node.js appli
 4. Monitor incoming requests with user agent string and origin
 5. Capture console output with log file output, rotate, and error stack traces
 6. Self-monitor by having multiple deployments monitor each other as well as external apps and Web locations
-7. Portably find function-specific folders and use the system browser
+7. Portably find function-specific folders and access the system browser
 8. Load app-specific json data from configurable out-of-source tree locations
 
 ## Features
