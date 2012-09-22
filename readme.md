@@ -1,5 +1,26 @@
 # haraldops
 Facilitates configuration, operation and service notifications for node.js applications
+
+## Benefits
+
+1. Configure the apps in json from outside its source tree
+2. Single-line setup of operations details
+3. Email communications from your apps
+4. Monitor incoming requests with user agent string and origin
+5. Capture console output with log file output, rotate, and error stack traces
+6. Self-monitor by having multiple deployments monitor each other as well as external apps and Web locations
+7. Portably find function-specific folders and use the system browser
+8. Load app-specific json data from configurable out-of-source tree locations
+
+## Features
+
+1. Flexible loading of out-of-source tree json data
+2. Email service wrapping various implementations including gmail
+3. Configurable heartbeat pinger-responder
+4. Express request logging
+5. stdout to file management
+5. OS portability layer
+
 # Usage
 ## Loading per-machine configuration
 ```js
